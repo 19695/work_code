@@ -1,4 +1,4 @@
-package org.colm.code.file.unzip;
+package org.colm.code.file.compress.zip;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -6,7 +6,7 @@ import java.io.FileInputStream;
 import java.nio.charset.Charset;
 import java.util.zip.ZipInputStream;
 
-public class ZipUnzipUtil {
+public class ZipUtil {
 
 
     private static boolean judgeEncoding(File file, Charset charset) {
