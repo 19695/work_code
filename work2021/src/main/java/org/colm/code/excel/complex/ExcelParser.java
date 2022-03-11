@@ -105,11 +105,12 @@ public class ExcelParser {
         rowIndex++;
         File file = new File(fileName);
         file.createNewFile();
-        FileOutputStream outputStream = new FileOutputStream(file);
-        workbook.write(outputStream);
-        outputStream.flush();
-        outputStream.close();
-        workbook.close();
+        try(FileOutputStream outputStream = new FileOutputStream(file)) {
+            workbook.write(outputStream);
+            outputStream.flush();
+        } finally {
+            workbook.close();
+        }
         return file;
     }
 
