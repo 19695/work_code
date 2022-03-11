@@ -4,17 +4,18 @@ import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ParserUtil {
+public class ParseUtil {
 
     // String[] cache
     private static final Map<Class<?>, List<ClassToStringArray>> arrayCache = new ConcurrentHashMap<>();
     
-    protected static <T> List<String[]> list2StringArray(List<T> list, Class<T> type) throws Exception {
+    public static <T> List<String[]> list2StringArray(List<T> list, Class<T> type) throws Exception {
         List<ClassToStringArray> toStrArrList = class2StringDesc(type); 
         int length = toStrArrList.size();
         List<String[]> arrayList = new ArrayList<>();
@@ -29,7 +30,7 @@ public class ParserUtil {
         return arrayList;
     }
     
-    protected static <T> List<ClassToStringArray> class2StringDesc(Class<T> type) {
+    public static <T> List<ClassToStringArray> class2StringDesc(Class<T> type) {
         return arrayCache.computeIfAbsent(type, t -> {
             List<ClassToStringArray> toStrArrList = new ArrayList<>();
             try {
@@ -40,11 +41,24 @@ public class ParserUtil {
                     if ("class".equalsIgnoreCase(fieldName)) {
                         continue;
                     }
-                    type.getDeclaredField(fieldName);
+                    Field field = type.getDeclaredField(fieldName);
+                    if (!field.isAccessible()) {
+                        field.setAccessible(true);
+                    }
+                    ColumnIndex columnIndex = field.getAnnotation(ColumnIndex.class);
+                    if (columnIndex != null) {
+                        ClassToStringArray classToStringArray = new ClassToStringArray();
+                        classToStringArray.setFieldType(descriptor.getPropertyType());
+                        classToStringArray.setReadMethod(descriptor.getReadMethod());
+                        classToStringArray.setWriteMethod(descriptor.getWriteMethod());
+                        classToStringArray.setIndex(columnIndex.index());
+                        toStrArrList.add(classToStringArray);
+                    }
                 }
-            } catch (IntrospectionException e) {
+            } catch (IntrospectionException | NoSuchFieldException e) {
                 throw new RuntimeException(e);
             }
+            return toStrArrList;
         });
     }
 
@@ -54,7 +68,7 @@ public class ParserUtil {
      * @param trim 当为 true 时去除前后空格
      * @return
      */
-    protected static String object2String (Object obj, boolean trim) {
+    public static String object2String (Object obj, boolean trim) {
         if (obj == null) {
             return "";
         }

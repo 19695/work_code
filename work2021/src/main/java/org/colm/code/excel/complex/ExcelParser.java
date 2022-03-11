@@ -1,4 +1,4 @@
-package org.colm.code.excel.reflect;
+package org.colm.code.excel.complex;
 
 import org.apache.poi.ss.usermodel.*;
 
@@ -19,13 +19,10 @@ public class ExcelParser {
 
     private static Map<Class, List<ExcelFieldInfo>> cachedType = new ConcurrentHashMap<>();
 
-    public static <T> File list2Excel() {
-
-        return null;
-    }
+    // todo 还可以扩展指定长度解析
 
     /**
-     * excel 解析为对应的实体集合
+     * 标注 ExcelCell 注解的对象进行 excel 解析
      * @param file
      * @param type
      * @param <T>
@@ -69,7 +66,7 @@ public class ExcelParser {
     }
 
     /**
-     * 将 list 导出为 excel
+     * 标注 ExcelCell 注解的对象导出为 excel
      * @param fileName
      * @param sheetName
      * @param workbook
@@ -275,5 +272,7 @@ public class ExcelParser {
         cachedType.put(type, fieldInfoList);
         return fieldInfoList;
     }
+
+    private ExcelParser () {}
 
 }

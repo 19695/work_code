@@ -1,5 +1,8 @@
 package org.colm.code.file;
 
+import org.apache.commons.io.FileUtils;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -36,6 +39,16 @@ public class FileUtil {
                 .replaceAll("\\=", "")
                 .replaceAll("\r", "")
                 .replaceAll("\n", "");
+    }
+
+    public static File multipartFile2File(MultipartFile multipartFile, String parentPath) {
+        File file = new File(parentPath, multipartFile.getOriginalFilename());
+        try {
+            FileUtils.copyInputStreamToFile(multipartFile.getInputStream(), file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return file;
     }
 
 }
