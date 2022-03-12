@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.colm.code.sequence.SequencePOMapper">
+
+    <select id="queryByKey" resultType="org.colm.code.sequence.SequencePO">
+        SELECT
+            `key`,
+            `sequence`,
+            version,
+            used_status
+        FROM tbl_sequence
+        WHERE `key` = #{key}
+    </select>
+
+    <update id="updateByKeyAndVersion">
+        UPDATE tbl_sequence
+        SET `sequence` = #{sequence},
+            version = version + 1,
+            used_status = '0'
+        WHERE `key` = #{key}
+        AND version = #{version}
+    </update>
+
+    <insert id="insertFirst">
+        INSERT INTO tbl_sequence (`key`, `sequence`, version)
+        (
+            SELECT a.`key`, a.`sequence`, a.version
+            FROM (
+                SELECT #{key} as `key`, #{sequence} as `sequence`, '0' as version
+            ) as a
+            LEFT JOIN tbl_sequence b
+            ON a.`key` = b.`key`
+            WHERE b.id IS NULL
+        )
+    </insert>
+
+
+    <update id="updateUsedStatusFlag">
+        UPDATE tbl_sequence
+        SET used_status = '1'
+        WHERE `key` = #{key}
+        AND `sequence` = #{sequence}
+        AND used_status = '0'
+    </update>
+
+</mapper>
