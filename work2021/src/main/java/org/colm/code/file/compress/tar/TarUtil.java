@@ -3,11 +3,14 @@ package org.colm.code.file.compress.tar;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
-import org.apache.commons.compress.archivers.tar.TarFile;
 import org.apache.commons.io.FileUtils;
 
 import java.io.*;
 
+/**
+ * 从别的地方改过来的，没有实际测试过
+ * 改动点：对流的关闭
+ */
 public class TarUtil {
 
     private static final String EMPTY = "";

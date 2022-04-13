@@ -9,6 +9,8 @@ import java.util.zip.GZIPOutputStream;
 
 public class GzUtil {
 
+    private GzUtil() {}
+
     /**
      * 压缩文件：默认压缩后文件名为 源文件名.gz
      * @param sourceFile 需要压缩的文件

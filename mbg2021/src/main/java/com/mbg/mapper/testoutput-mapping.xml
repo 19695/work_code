@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MNS_TestOutPut">
+
+	<insert id="insert" parameterType="java.util.List">
+		INSERT INTO test
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="item.aA != null">
+				a_a,
+			</if>
+			<if test="item.bB != null">
+				b_b,
+			</if>
+		</trim>
+		VALUES
+		<foreach collection="list" item="item" separator=",">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<if test="item.aA != null ">
+					#{item.aA},
+				</if>
+				<if test="item.bB != null ">
+					#{item.bB},
+				</if>
+			</trim>
+		</foreach>
+	</insert>
+
+	<delete id="delete" parameterType="java.util.List">
+		DELETE FROM test
+		<where>
+			<foreach collection="list" item="item">
+				<trim prefix="(" suffix=")" prefixOverrides="AND">
+					<if test="item.aA != null">
+						AND a_a = #{item.aA}
+					</if>
+					<if test="item.bB != null">
+						AND b_b = #{item.bB}
+					</if>
+				</trim>
+			</foreach>
+		</where>
+	</delete>
+
+</mapper>

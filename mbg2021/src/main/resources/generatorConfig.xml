@@ -1,0 +1,39 @@
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <properties resource="config.properties"/>
+
+    <!-- 这些配置信息可以参考 mybatis 书籍（书名忘了，一般都知道的那本） -->
+    <context id="myTables" targetRuntime="MyBatis3Simple" defaultModelType="flat">
+<!--    <context id="myTables" targetRuntime="MyBatis3" defaultModelType="flat">-->
+        
+        <commentGenerator type="com.mbg.config.MyCommentGenerator">
+<!--            <property name="suppressAllComments" value="true"/>-->
+            <property name="addRemarkComments" value="true"/>
+        </commentGenerator>
+        
+        <jdbcConnection driverClass="${jdbc.driverClass}" 
+                        connectionURL="${jdbc.url}"
+                        userId="${jdbc.user}"
+                        password="${jdbc.password}">
+        </jdbcConnection>
+        
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+        
+        <javaModelGenerator targetPackage=".\src\main\java" targetProject="${generate.entityPath}">
+            <property name="enableSubPackages" value="false"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+<!-- 不需要 mbg 自带的 mapper 文件，通过反射拼装 -->
+<!--
+        <sqlMapGenerator targetPackage=".\src\main\java" targetProject="com.mbg.mapper">
+            <property name="enableSubPackages" value="false"/>
+        </sqlMapGenerator>
+-->
+        <table tableName="${generate.tableName}" domainObjectName="${generate.entityName}" />
+        
+    </context>
+</generatorConfiguration>
