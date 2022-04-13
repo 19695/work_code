@@ -4,7 +4,10 @@
 
 一些工作中用到，自己封装的东西
 
-
+* MBG
+   * 根据实际项目需要进行了处理
+      * mapper.xml 手动生成
+      * entity 带有属性注释   
 
 * ExcelUtl
     * ObjectDescriptionReflect
@@ -19,19 +22,23 @@
     * 支持字符串数组集合
     * 支持字符串
     * 读写都支持
-* 分片上传
+ * 文件
+   * 分片上传（基于 base64）
+   * 压缩
+      * Compress
+      * GzUtil
+      * ZipUtil
+      * TarUtil
+   * FileUtil
 * Json 排序
 * SequenceUtil
 * SftpPool
 * AssertUtil
     * 为空判断
-
 * BlankCheckUtil
 * ListCopyUtil
 * RecoredUtil
     * 方法执行时间记录
-    * 方法出入参记录
-* Compress
-    * GzUtil
-    * ZipUtil
-    * TarUtil
+    * 方法出入参记录（不一定会写，因为只是基于 resttemplate 发送 map，不通用）
+* StringUtil
+* ThreadPoolUtil
