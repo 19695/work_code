@@ -42,3 +42,4 @@
     * 方法出入参记录（不一定会写，因为只是基于 resttemplate 发送 map，不通用）
 * StringUtil
 * ThreadPoolUtil
+* LockUtil
