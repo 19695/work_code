@@ -43,3 +43,21 @@
 * StringUtil
 * ThreadPoolUtil
 * LockUtil
+
+git 指定日期查看自己的增删行数
+
+```bash
+git log --since="2022-4-13" --before="2022-4-15" --author="$(git config --get user.name)" --pretty=tformat: --numstat | gawk '{ add += $1 ; subs += $2 ; loc += $1 - $2 } END { printf "added lines: %s rem
+oved lines : %s total lines: %s\n",add,subs,loc }'
+```
+
+查询指定用户的增删行数
+
+```bash
+git log --author="YOUR_USERNAME" --pretty=tformat: --numstat | awk '{ add += $1; subs += $2; loc += $1 - $2 } END { printf "added lines: %s, removed lines: %s, total lines: %s\n", add, subs, loc }'
+```
+
+单独统计每个人的增删行数
+```bash
+git log --format='%aN' | sort -u | while read name; do echo -en "$name\t"; git log --author="$name" --pretty=tformat: --numstat | awk '{ add += $1; subs += $2; loc += $1 - $2 } END { printf "added lines: %s, removed lines: %s, total lines: %s\n", add, subs, loc }' -; done
+```

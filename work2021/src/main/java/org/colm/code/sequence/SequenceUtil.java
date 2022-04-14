@@ -85,8 +85,8 @@ public class SequenceUtil {
      * @param fmt
      * @return
      */
-    public static String updateStatusAndGetSimpleOneStep(String key, String sequence, String fmt) throws SequenceException {
-        return updateStatusAndGetSimple(key, sequence, fmt, 1);
+    public static String updateStatusElseGetSimpleOneStep(String key, String sequence, String fmt) throws SequenceException {
+        return updateStatusElseGetSimple(key, sequence, fmt, 1);
     }
 
     /**
@@ -97,8 +97,8 @@ public class SequenceUtil {
      * @param step
      * @return
      */
-    public static String updateStatusAndGetSimple(String key, String sequence, String fmt, int step) throws SequenceException {
-        return updateStatusAndGet(key, sequence, prepareFunction(fmt, step));
+    public static String updateStatusElseGetSimple(String key, String sequence, String fmt, int step) throws SequenceException {
+        return updateStatusElseGet(key, sequence, prepareFunction(fmt, step));
     }
 
     /**
@@ -110,11 +110,11 @@ public class SequenceUtil {
      * @param function
      * @return
      */
-    public static String updateStatusAndGet(String key, String sequence, Function<String, String> function) throws SequenceException {
+    public static String updateStatusElseGet(String key, String sequence, Function<String, String> function) throws SequenceException {
         if (updateStatusSimple(key, sequence)) {
             return sequence;
         } else {
-            return updateStatusAndGet(key, getSeqNo(key, function), function);
+            return updateStatusElseGet(key, getSeqNo(key, function), function);
         }
     }
 

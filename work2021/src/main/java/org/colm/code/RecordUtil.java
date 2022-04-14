@@ -15,8 +15,6 @@ public class RecordUtil {
         return result;
     }
 
-    private static void log(String msg) {
-
-    }
+    private static void log(String msg) {}
 
 }

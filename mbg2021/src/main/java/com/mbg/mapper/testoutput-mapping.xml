@@ -16,10 +16,10 @@
 		VALUES
 		<foreach collection="list" item="item" separator=",">
 			<trim prefix="(" suffix=")" suffixOverrides=",">
-				<if test="item.aA != null ">
+				<if test="item.aA != null">
 					#{item.aA},
 				</if>
-				<if test="item.bB != null ">
+				<if test="item.bB != null">
 					#{item.bB},
 				</if>
 			</trim>
@@ -29,7 +29,7 @@
 	<delete id="delete" parameterType="java.util.List">
 		DELETE FROM test
 		<where>
-			<foreach collection="list" item="item">
+			<foreach collection="list" item="item" separator="OR">
 				<trim prefix="(" suffix=")" prefixOverrides="AND">
 					<if test="item.aA != null">
 						AND a_a = #{item.aA}
@@ -41,5 +41,45 @@
 			</foreach>
 		</where>
 	</delete>
+
+	<update id="update">
+		UPDATE test
+		<trim prefix="set" suffixOverrides=",">
+			<if test="aA != null">
+				a_a = #{aA},
+			</if>
+			<if test="bB != null">
+				b_b = #{bB},
+			</if>
+		</trim>
+		<where>
+			<foreach collection="list" item="item" separator="OR">
+				<trim prefix="(" suffix=")" prefixOverrides="AND">
+					<if test="item.aA != null">
+						AND a_a = #{item.aA}
+					</if>
+					<if test="item.bB != null">
+						AND b_b = #{item.bB}
+					</if>
+				</trim>
+			</foreach>
+		</where>
+	</update>
+
+	<select id="query" parameterType="java.util.List" resultType="com.mbg.entity.TestOutPut">
+		SELECT * FROM test
+		<where>
+			<foreach collection="list" item="item" separator="OR">
+				<trim prefix="(" suffix=")" prefixOverrides="AND">
+					<if test="item.aA != null">
+						AND a_a = #{item.aA}
+					</if>
+					<if test="item.bB != null">
+						AND b_b = #{item.bB}
+					</if>
+				</trim>
+			</foreach>
+		</where>
+	</select>
 
 </mapper>

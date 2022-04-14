@@ -51,10 +51,17 @@ public class GenerateMapperFile {
             .emptyLine();
 
         appendInsert();
+
         out.emptyLine();
 
         appendDelete();
+
+        out.emptyLine();
+
         appendUpdate();
+
+        out.emptyLine();
+
         appendQuery();
 
         out.resetIndentation()
@@ -62,14 +69,75 @@ public class GenerateMapperFile {
             .append("</mapper>");
     }
 
-    // todo
     private static void appendQuery() {
-
+        out.appendWithIndent("<select id=\"query\" parameterType=\"java.util.List\" resultType=\"" + typeName + "\">")
+            .increaseIndent(1)
+            .appendWithIndent("SELECT * FROM " + tableName)
+            .appendWithIndent("<where>")
+            .increaseIndent(1)
+            .appendWithIndent("<foreach collection=\"list\" item=\"item\" separator=\"OR\">")
+            .increaseIndent(1)
+            .appendWithIndent("<trim prefix=\"(\" suffix=\")\" prefixOverrides=\"AND\">")
+            .increaseIndent(1);
+        for (Map.Entry<String, String> entry : fieldColumnEntrySet) {
+            out.appendWithIndent("<if test=\"item." + entry.getKey() + " != null\">")
+                .increaseIndent(1)
+                .appendWithIndent("AND " + entry.getValue() + " = #{item." + entry.getKey() + "}")
+                .decreaseIndent(1)
+                .appendWithIndent("</if>");
+        }
+        out.decreaseIndent(1)
+            .appendWithIndent("</trim>")
+            .decreaseIndent(1)
+            .appendWithIndent("</foreach>")
+            .decreaseIndent(1)
+            .appendWithIndent("</where>")
+            .decreaseIndent(1)
+            .appendWithIndent("</select>");
     }
 
-    // todo
+    /*
+        这里原本是项目框架内封装了一个对象（update）用于更新操作
+        项目内封装了一个 sqlMap 对象，看不到源码
+        大致原理类似于使用 sqlSession.update(statement, param)
+        我摘录下来就不写这个 update 对象了，我目前适用情景为 x.update(x, list<x>)
+     */
     private static void appendUpdate() {
-
+        out.appendWithIndent("<update id=\"update\">")
+            .increaseIndent(1)
+            .appendWithIndent("UPDATE " + tableName)
+            .appendWithIndent("<trim prefix=\"set\" suffixOverrides=\",\">")
+            .increaseIndent(1);
+        for (Map.Entry<String, String> entry : fieldColumnEntrySet) {
+            out.appendWithIndent("<if test=\"" + entry.getKey() + " != null\">")
+                .increaseIndent(1)
+                .appendWithIndent(entry.getValue() + " = #{" + entry.getKey() + "},")
+                .decreaseIndent(1)
+                .appendWithIndent("</if>");
+        }
+        out.decreaseIndent(1)
+            .appendWithIndent("</trim>")
+            .appendWithIndent("<where>")
+            .increaseIndent(1)
+            .appendWithIndent("<foreach collection=\"list\" item=\"item\" separator=\"OR\">")
+            .increaseIndent(1)
+            .appendWithIndent("<trim prefix=\"(\" suffix=\")\" prefixOverrides=\"AND\">")
+            .increaseIndent(1);
+        for (Map.Entry<String, String> entry : fieldColumnEntrySet) {
+            out.appendWithIndent("<if test=\"item." + entry.getKey() + " != null\">")
+                .increaseIndent(1)
+                .appendWithIndent("AND " + entry.getValue() + " = #{item." + entry.getKey() + "}")
+                .decreaseIndent(1)
+                .appendWithIndent("</if>");
+        }
+        out.decreaseIndent(1)
+            .appendWithIndent("</trim>")
+            .decreaseIndent(1)
+            .appendWithIndent("</foreach>")
+            .decreaseIndent(1)
+            .appendWithIndent("</where>")
+            .decreaseIndent(1)
+            .appendWithIndent("</update>");
     }
 
     private static void appendDelete() {
@@ -78,7 +146,7 @@ public class GenerateMapperFile {
             .appendWithIndent("DELETE FROM " + tableName)
             .appendWithIndent("<where>")
             .increaseIndent(1)
-            .appendWithIndent("<foreach collection=\"list\" item=\"item\">")
+            .appendWithIndent("<foreach collection=\"list\" item=\"item\" separator=\"OR\">")
             .increaseIndent(1)
             .appendWithIndent("<trim prefix=\"(\" suffix=\")\" prefixOverrides=\"AND\">")
             .increaseIndent(1);
@@ -120,7 +188,7 @@ public class GenerateMapperFile {
             .appendWithIndent("<trim prefix=\"(\" suffix=\")\" suffixOverrides=\",\">");
         for (String field : fieldList) {
             out.indent(2)
-                .appendWithIndent("<if test=\"item." + field + " != null \">")
+                .appendWithIndent("<if test=\"item." + field + " != null\">")
                 .indent(3)
                 .appendWithIndent("#{item." + field + "},")
                 .indent(2)

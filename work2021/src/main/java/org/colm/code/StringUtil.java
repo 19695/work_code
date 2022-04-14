@@ -28,4 +28,11 @@ public class StringUtil {
         throw new RuntimeException("没有探测到字符集");
     }
 
+    public static String valueOf(Object object) {
+        if (object == null) {
+            return null;
+        }
+        return String.valueOf(object);
+    }
+
 }
