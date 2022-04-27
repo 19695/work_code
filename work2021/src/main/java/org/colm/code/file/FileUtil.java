@@ -15,7 +15,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.colm.code.ThreadPoolUtil.FIXED_POOL;
+import static org.colm.code.ThreadPoolUtil.EXECUTOR;
 
 public class FileUtil {
 
@@ -82,7 +82,7 @@ public class FileUtil {
         List<Future<PartialByteInfo>> futureList = new ArrayList<>();
         // 读取每一个分片，将每个分片转为 byte[]
         for (PartialInfo partialInfo : partialInfoList) {
-            Future<PartialByteInfo> submit = FIXED_POOL.submit(() -> {
+            Future<PartialByteInfo> submit = EXECUTOR.submit(() -> {
                 String fileName = partialInfo.getDocId();
                 File file = new File(parentPath, fileName);
                 if (!file.exists() || file.length() == 0) {
