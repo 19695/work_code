@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <plugins>
+        <plugin interceptor="org.colm.code.mybatis.resultsetLimit.MybatisResultSetLimitInterceptor">
+            <property name="dialect" value="MySQL"/>
+            <property name="maxResultSetSize" value="2000"/>
+            <property name="allowList" value="org.colm.example.UserMapper.query,org.colm.example.UserMapper.queryAll:3000"/>
+        </plugin>
+        <plugin interceptor="org.colm.code.mybatis.statistics.SqlStatisticsInterceptor"></plugin>
+    </plugins>
+</configuration>

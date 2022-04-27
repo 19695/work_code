@@ -2,13 +2,14 @@
 
 
 
-一些工作中用到，自己封装的东西
+**一些工作中用到，自己封装的东西**
+
+
 
 * MBG
    * 根据实际项目需要进行了处理
       * mapper.xml 手动生成
       * entity 带有属性注释   
-
 * ExcelUtl
     * ObjectDescriptionReflect
         支持多种类型，基于反射，读写都支持
@@ -16,7 +17,6 @@
         所有属性都是字符串，基于反射，读写都支持
     * StringArrayReadUtil
         基于字符串数组，仅适配了读取
-
 * CSVUtl
     * 支持对象所有属性都是字符串
     * 支持字符串数组集合
@@ -35,14 +35,22 @@
 * SftpPool
 * AssertUtil
     * 为空判断
-* BlankCheckUtil
+* BlankReplaceUtil
 * ListCopyUtil
 * RecoredUtil
     * 方法执行时间记录
-    * 方法出入参记录（不一定会写，因为只是基于 resttemplate 发送 map，不通用）
 * StringUtil
+    * 字符集判断
 * ThreadPoolUtil
 * LockUtil
+* Redis
+* Mybatis Interceptor
+    * 结果集数量限制
+    * 执行时间记录
+* DateTimeUtil
+    * jdk 8 时间 api 与 date 转换
+
+
 
 git 指定日期查看自己的增删行数
 
