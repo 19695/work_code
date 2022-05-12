@@ -47,7 +47,7 @@ public class ExcelParser {
         List<T> resultList = new ArrayList<>();
         while (iterator.hasNext()) {
             Row row = iterator.next();
-            // type.newInstance() 已经被淘汰了
+            // type.newInstance() 已经被淘汰了 since 9
             T bean = type.getDeclaredConstructor().newInstance();
             for (ExcelFieldInfo fieldInfo : fieldInfoList) {
                 Cell cell = row.getCell(fieldInfo.getIndex());

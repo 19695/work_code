@@ -41,6 +41,11 @@ public class JavaStringCompiler {
 	public Map<String, byte[]> compile(String fileName, String source) throws IOException {
 		try (MemoryJavaFileManager manager = new MemoryJavaFileManager(stdManager)) {
 			JavaFileObject javaFileObject = manager.makeStringSource(fileName, source);
+			/*
+			猜测：
+				jdk 8：非 java 代码实现，debug 跟不进去
+				jdk 11：可以找到实现类，进行源码 debug
+			 */
 			CompilationTask task = compiler.getTask(null, manager, null, null, null,
 					Arrays.asList(javaFileObject));
 			Boolean result = task.call();
